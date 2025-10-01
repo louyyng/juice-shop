@@ -55,25 +55,26 @@ jobs:
             category: "/language:${{ matrix.language }}"
      
   sca:
-    name:       SCA Analysis
-    runs-on:    ubuntu-latest
-    needs:      build
+    name: SCA Analysis
+    runs-on: ubuntu-latest
+    needs: build
     steps:
-        - name: Checkout repository
-          uses: actions/checkout@v4
-        
-        - name: Install dependencies
-          run: npm install ; npm install --package-lock
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-        - name: OWASP Dependency-Check
-          uses: dependency-check/Dependency-Check_Action@main
-          with:
-            project: 'juice-shop'
-            scanPath: '.'
-            format: 'HTML'
+      - name: Install dependencies
+        run: npm ci
 
-        - name: Upload Dependency-Check report
-          uses: actions/upload-artifact@v4
-          with:
-            name: dependency-check-report
-            path: ${{ runner.workspace }}/dependency-check-report.html
+      - name: OWASP Dependency-Check
+        uses: dependency-check/Dependency-Check_Action@main
+        with:
+          project: 'juice-shop'
+          scanPath: '.'
+          format: 'HTML'
+          args: '--disableArchive'
+
+      - name: Upload Dependency-Check report
+        uses: actions/upload-artifact@v4
+        with:
+          name: dependency-check-report
+          path: ${{ runner.workspace }}/dependency-check-report.html

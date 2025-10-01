@@ -33,10 +33,10 @@ jobs:
         security-events: write
     
     strategy:
-        fail-fast: false
-        matrix:
-            language: ['javascript', 'typescript']
-    
+      fail-fast: false
+      matrix:
+        language: [ 'javascript' ]
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4

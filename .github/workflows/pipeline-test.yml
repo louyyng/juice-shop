@@ -73,11 +73,14 @@ jobs:
           format: 'HTML'
           args: '--disableArchive'
 
+      - name: Create reports directory
+        run: mkdir -p ${{ github.workspace }}/reports
+
       - name: Upload Dependency-Check report
         uses: actions/upload-artifact@v4
         with:
           name: dependency-check-report
-          path: ${{ runner.workspace }}/reports/dependency-check-report.html
+          path: ${{ github.workspace }}/reports/dependency-check-report.html
 
   container-scan:
     name: Container Scanning
@@ -115,11 +118,14 @@ jobs:
         - name: Wait for application to start
           run: sleep 60
 
+        - name: Create reports directory
+          run: mkdir -p ${{ github.workspace }}/zap-reports
+
         - name: OWASP ZAP Scan
           uses: zaproxy/action-baseline@v0.12.0
           with:
             target: 'http://localhost:3000'
-            cmd_options: '-r zap_report.html'
+            cmd_options: '-r ${{ github.workspace }}/zap-reports/zap_report.html'
 
         - name: Upload ZAP report
           if: always()

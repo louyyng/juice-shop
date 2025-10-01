@@ -12,11 +12,13 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
         
       - name: Secret scan with Truffle
         uses: trufflesecurity/trufflehog@main
-        with: 
-            path: ./
-            base: ${{ github.event.before }}
-            head: ${{ github.sha }}
-            extra_args: --only-verified            
+        with:
+          path: ./
+          base: ${{ github.event.before }}
+          head: ${{ github.sha }}
+          extra_args: --only-verified            

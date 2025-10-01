@@ -118,8 +118,10 @@ jobs:
         - name: Wait for application to start
           run: sleep 60
 
-        - name: Create reports directory
-          run: mkdir -p ${{ github.workspace }}/zap-reports
+        - name: Prepare directory and set permissions for ZAP
+          run: |
+            mkdir -p ${{ github.workspace }}/zap-reports
+            chmod -R 777 ${{ github.workspace }}
 
         - name: OWASP ZAP Scan
           uses: zaproxy/action-baseline@v0.12.0
@@ -132,5 +134,5 @@ jobs:
           uses: actions/upload-artifact@v4
           with:
             name: zap-baseline-report
-            path: zap_report.html
+            path: ${{ github.workspace }}/zap-reports/zap_report.html
 
